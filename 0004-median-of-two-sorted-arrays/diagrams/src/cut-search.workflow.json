@@ -1,0 +1,209 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "The cut: binary search on a partition",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/cut-search.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "frontend": {
+     "label": "Start"
+    },
+    "backend": {
+     "label": "Compute"
+    },
+    "database": {
+     "label": "Read"
+    },
+    "security": {
+     "label": "Check"
+    },
+    "messagebus": {
+     "label": "Move"
+    },
+    "external": {
+     "label": "Input"
+    },
+    "cloud": {
+     "label": "Remote"
+    }
+   }
+  }
+ },
+ "lanes": [
+  {
+   "id": "setup",
+   "label": "Set up"
+  },
+  {
+   "id": "probe",
+   "label": "Probe"
+  },
+  {
+   "id": "move",
+   "label": "Move the cut"
+  },
+  {
+   "id": "answer",
+   "label": "Answer"
+  }
+ ],
+ "mainPath": [
+  "swap",
+  "half",
+  "probe",
+  "read",
+  "c1",
+  "c2",
+  "found"
+ ],
+ "nodes": [
+  {
+   "id": "swap",
+   "lane": "setup",
+   "col": 0,
+   "type": "frontend",
+   "icon": "start",
+   "label": "Shorter array first",
+   "sublabel": "swap if A is longer"
+  },
+  {
+   "id": "half",
+   "lane": "setup",
+   "col": 1,
+   "type": "backend",
+   "label": "half = (m+n+1)/2",
+   "sublabel": "search cutA in 0..m"
+  },
+  {
+   "id": "probe",
+   "lane": "probe",
+   "col": 2,
+   "type": "backend",
+   "label": "Probe",
+   "sublabel": "cutA = middle of lo..hi",
+   "tag": "cutB = half - cutA"
+  },
+  {
+   "id": "read",
+   "lane": "probe",
+   "col": 3,
+   "type": "database",
+   "label": "Read 4 neighbours",
+   "sublabel": "MIN / MAX at an edge"
+  },
+  {
+   "id": "c1",
+   "lane": "probe",
+   "col": 4,
+   "type": "security",
+   "icon": "decision",
+   "label": "aLeft > bRight ?"
+  },
+  {
+   "id": "c2",
+   "lane": "probe",
+   "col": 5,
+   "type": "security",
+   "icon": "decision",
+   "label": "bLeft > aRight ?"
+  },
+  {
+   "id": "left",
+   "lane": "move",
+   "col": 4,
+   "type": "messagebus",
+   "label": "hi = cutA - 1",
+   "sublabel": "A gave too much"
+  },
+  {
+   "id": "right",
+   "lane": "move",
+   "col": 5,
+   "type": "messagebus",
+   "label": "lo = cutA + 1",
+   "sublabel": "A must give more"
+  },
+  {
+   "id": "found",
+   "lane": "answer",
+   "col": 5,
+   "type": "backend",
+   "icon": "success",
+   "label": "Median wall found",
+   "sublabel": "odd: leftMax",
+   "tag": "even: (leftMax+rightMin)/2.0"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "swap",
+   "to": "half"
+  },
+  {
+   "id": "e2",
+   "from": "half",
+   "to": "probe",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e3",
+   "from": "probe",
+   "to": "read"
+  },
+  {
+   "id": "e4",
+   "from": "read",
+   "to": "c1"
+  },
+  {
+   "id": "e5",
+   "from": "c1",
+   "to": "left",
+   "label": "yes",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e6",
+   "from": "c1",
+   "to": "c2",
+   "label": "no"
+  },
+  {
+   "id": "e7",
+   "from": "c2",
+   "to": "right",
+   "label": "yes",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e8",
+   "from": "c2",
+   "to": "found",
+   "label": "no",
+   "variant": "emphasis",
+   "role": "main"
+  },
+  {
+   "id": "e9",
+   "from": "left",
+   "to": "probe",
+   "label": "next probe",
+   "variant": "dashed",
+   "role": "return"
+  },
+  {
+   "id": "e10",
+   "from": "right",
+   "to": "probe",
+   "variant": "dashed",
+   "role": "return"
+  }
+ ]
+}

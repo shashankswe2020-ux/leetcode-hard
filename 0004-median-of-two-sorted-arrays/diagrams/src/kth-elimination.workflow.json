@@ -1,0 +1,180 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "K-th elimination: drop k/2 per round",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/kth-elimination.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "frontend": {
+     "label": "Start"
+    },
+    "backend": {
+     "label": "Compute"
+    },
+    "database": {
+     "label": "Read"
+    },
+    "security": {
+     "label": "Check"
+    },
+    "messagebus": {
+     "label": "Move"
+    },
+    "external": {
+     "label": "Input"
+    },
+    "cloud": {
+     "label": "Remote"
+    }
+   }
+  }
+ },
+ "lanes": [
+  {
+   "id": "in",
+   "label": "Median as k-th"
+  },
+  {
+   "id": "loop",
+   "label": "One round"
+  },
+  {
+   "id": "drop",
+   "label": "Drop a chunk"
+  },
+  {
+   "id": "out",
+   "label": "Answer"
+  }
+ ],
+ "mainPath": [
+  "k",
+  "stop",
+  "step",
+  "cmp",
+  "dropB"
+ ],
+ "nodes": [
+  {
+   "id": "k",
+   "lane": "in",
+   "col": 0,
+   "type": "frontend",
+   "icon": "start",
+   "label": "k = (m+n)/2 + 1",
+   "sublabel": "even total: k and k-1, averaged"
+  },
+  {
+   "id": "stop",
+   "lane": "loop",
+   "col": 1,
+   "type": "security",
+   "icon": "decision",
+   "label": "Done yet?",
+   "sublabel": "an array used up, or k = 1"
+  },
+  {
+   "id": "step",
+   "lane": "loop",
+   "col": 2,
+   "type": "database",
+   "label": "Look k/2 ahead",
+   "sublabel": "last of each chunk",
+   "tag": "clipped to the array end"
+  },
+  {
+   "id": "cmp",
+   "lane": "loop",
+   "col": 3,
+   "type": "security",
+   "icon": "decision",
+   "label": "a[lastA] <= b[lastB] ?"
+  },
+  {
+   "id": "dropA",
+   "lane": "drop",
+   "col": 3,
+   "type": "messagebus",
+   "label": "Drop A's chunk",
+   "sublabel": "k -= its size"
+  },
+  {
+   "id": "dropB",
+   "lane": "drop",
+   "col": 4,
+   "type": "messagebus",
+   "label": "Drop B's chunk",
+   "sublabel": "k -= its size"
+  },
+  {
+   "id": "ans",
+   "lane": "out",
+   "col": 2,
+   "type": "backend",
+   "icon": "success",
+   "label": "k-th smallest",
+   "sublabel": "other array's k-th, or min of fronts"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "k",
+   "to": "stop",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e2",
+   "from": "stop",
+   "to": "step",
+   "label": "no"
+  },
+  {
+   "id": "e3",
+   "from": "stop",
+   "to": "ans",
+   "label": "yes",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e4",
+   "from": "step",
+   "to": "cmp"
+  },
+  {
+   "id": "e5",
+   "from": "cmp",
+   "to": "dropA",
+   "label": "yes",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e6",
+   "from": "cmp",
+   "to": "dropB",
+   "label": "no",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e7",
+   "from": "dropA",
+   "to": "stop",
+   "label": "next round",
+   "variant": "dashed",
+   "role": "return"
+  },
+  {
+   "id": "e8",
+   "from": "dropB",
+   "to": "stop",
+   "variant": "dashed",
+   "role": "return"
+  }
+ ]
+}

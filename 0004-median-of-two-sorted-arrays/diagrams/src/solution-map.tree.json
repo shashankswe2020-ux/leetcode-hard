@@ -1,0 +1,83 @@
+{
+ "schema_version": 1,
+ "diagram_type": "tree",
+ "meta": {
+  "title": "Every way to find the median",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/solution-map.html"
+ },
+ "nodes": [
+  {
+   "id": "root",
+   "label": "Median of two sorted arrays",
+   "sublabel": "LeetCode 4"
+  },
+  {
+   "id": "lin",
+   "parent": "root",
+   "label": "Linear",
+   "sublabel": "read the numbers"
+  },
+  {
+   "id": "pos",
+   "parent": "root",
+   "label": "Search a position",
+   "sublabel": "binary search on an index"
+  },
+  {
+   "id": "val",
+   "parent": "root",
+   "label": "Search a value",
+   "sublabel": "binary search on the answer"
+  },
+  {
+   "id": "sort",
+   "parent": "lin",
+   "label": "Glue + sort",
+   "sublabel": "O((m+n) log(m+n)), O(m+n) space"
+  },
+  {
+   "id": "merge",
+   "parent": "lin",
+   "label": "Merge to the middle",
+   "sublabel": "O(m+n), O(1) space"
+  },
+  {
+   "id": "cut",
+   "parent": "pos",
+   "label": "The cut",
+   "sublabel": "O(log min(m,n)): the answer they want"
+  },
+  {
+   "id": "modern",
+   "parent": "pos",
+   "label": "The cut, modern Java",
+   "sublabel": "same speed, overflow-safe"
+  },
+  {
+   "id": "kthcut",
+   "parent": "pos",
+   "label": "K-th via the cut",
+   "sublabel": "homework: left side holds k"
+  },
+  {
+   "id": "elim",
+   "parent": "pos",
+   "label": "K-th elimination",
+   "sublabel": "O(log(m+n)): drop k/2 per round"
+  },
+  {
+   "id": "value",
+   "parent": "val",
+   "label": "Count <= v",
+   "sublabel": "32 rounds over the int range"
+  },
+  {
+   "id": "shard",
+   "parent": "val",
+   "label": "1,000 shards",
+   "sublabel": "sum the counts per round"
+  }
+ ]
+}

@@ -1,0 +1,158 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "How Harness.java proves the solutions",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/harness.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "emphasis": {
+     "label": "checked path"
+    },
+    "default": {
+     "label": "test inputs and expected values"
+    }
+   }
+  }
+ },
+ "stages": [
+  {
+   "label": "Inputs"
+  },
+  {
+   "label": "Gather"
+  },
+  {
+   "label": "Run both"
+  },
+  {
+   "label": "Compare"
+  },
+  {
+   "label": "Verdict"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "fixed",
+   "type": "external",
+   "label": "Examples + edges",
+   "sublabel": "empty, duplicates, extremes",
+   "stage": 0,
+   "row": 0
+  },
+  {
+   "id": "rand",
+   "type": "external",
+   "label": "Random cases",
+   "sublabel": "10,200, seeded",
+   "stage": 0,
+   "row": 1,
+   "tag": "up to 1,000 each"
+  },
+  {
+   "id": "shards",
+   "type": "external",
+   "label": "Shard clusters",
+   "sublabel": "50 x 2..40 shards",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "cases",
+   "type": "messagebus",
+   "label": "Every case",
+   "sublabel": "cloned per call",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "sols",
+   "type": "backend",
+   "label": "7 solutions",
+   "sublabel": "sort .. sharded",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "ref",
+   "type": "security",
+   "label": "Reference",
+   "sublabel": "sort in long math",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "cmp",
+   "type": "security",
+   "label": "Exact compare",
+   "sublabel": "Double.compare == 0",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "ok",
+   "type": "database",
+   "label": "ALL AGREE",
+   "sublabel": "else FAIL + exit 1",
+   "stage": 4,
+   "row": 1
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "fixed",
+   "to": "cases",
+   "label": "14 pairs"
+  },
+  {
+   "id": "f2",
+   "from": "rand",
+   "to": "cases",
+   "label": "10,200 pairs"
+  },
+  {
+   "id": "f3",
+   "from": "shards",
+   "to": "cases",
+   "label": "50 clusters"
+  },
+  {
+   "id": "f4",
+   "from": "cases",
+   "to": "sols",
+   "label": "same input",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f5",
+   "from": "cases",
+   "to": "ref",
+   "label": "same input"
+  },
+  {
+   "id": "f6",
+   "from": "sols",
+   "to": "cmp",
+   "label": "medians",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f7",
+   "from": "ref",
+   "to": "cmp",
+   "label": "expected"
+  },
+  {
+   "id": "f8",
+   "from": "cmp",
+   "to": "ok",
+   "label": "0 failures",
+   "variant": "emphasis"
+  }
+ ]
+}

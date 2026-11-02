@@ -26,3 +26,5 @@ cd 0004-median-of-two-sorted-arrays
 ./run.sh --no-timing   # correctness only, a few seconds
 ./run.sh               # plus the timing table
 ```
+
+Diagrams in each walkthrough are made with [Archify](https://github.com/tt-a1i/archify): the README shows light and dark SVGs, and `diagrams/interactive/` holds the explorable HTML versions.

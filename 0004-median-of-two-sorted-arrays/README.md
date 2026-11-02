@@ -181,14 +181,12 @@ Inside each array, left ≤ right is already true because the array is sorted. S
 
 If both hold, every left number is ≤ every right number: that's the median wall.
 
-```mermaid
-flowchart LR
-    P["probe: cutA = mid of lo..hi<br/>cutB = half − cutA"] --> C1{"aLeft &gt; bRight?"}
-    C1 -- yes --> L["hi = cutA − 1<br/>(move the cut left)"] --> P
-    C1 -- no --> C2{"bLeft &gt; aRight?"}
-    C2 -- yes --> R["lo = cutA + 1<br/>(move the cut right)"] --> P
-    C2 -- no --> F["found the wall<br/>median from leftMax / rightMin"]
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/cut-search-dark.svg">
+  <img src="diagrams/cut-search-light.svg" alt="The cut as a workflow: set up, probe, two cross checks, move the cut left or right, or stop at the median wall" width="100%">
+</picture>
+
+<sub>Archify diagram · <a href="diagrams/interactive/cut-search.html">interactive version</a> (download and open in a browser) · <a href="diagrams/src/">source</a></sub>
 
 <details>
 <summary><b>Your turn:</b> aLeft is bigger than bRight. Which way does cutA move?</summary>
@@ -357,6 +355,13 @@ k=2  step 1:  A[..1] = 4     B[..2] = 6      4 < 6 → drop A's 4         k = 1
 k=1:          min(7, 6) = 6                                             → 6 ✓
 ```
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/kth-elimination-dark.svg">
+  <img src="diagrams/kth-elimination-light.svg" alt="K-th elimination loop: stop if an array is used up or k is 1, otherwise look k/2 ahead, compare the last numbers, drop the smaller chunk and subtract its size from k" width="100%">
+</picture>
+
+<sub>Archify diagram · <a href="diagrams/interactive/kth-elimination.html">interactive version</a> (download and open in a browser) · <a href="diagrams/src/">source</a></sub>
+
 <details>
 <summary><b>Your turn:</b> why is it safe to throw away the smaller chunk?</summary>
 
@@ -414,22 +419,12 @@ The staff-level follow-up: the data no longer fits on one machine. It's split ac
 **The value search.** You can't merge a thousand machines, and the cut needs exactly two arrays. But every shard can answer one cheap question: *how many of yours are ≤ v?*
 </details>
 
-```mermaid
-sequenceDiagram
-    participant C as Coordinator
-    participant S1 as Shard 1
-    participant S2 as Shard 2
-    participant SN as Shard 1000
-    loop 32 rounds (binary search on v)
-        C->>S1: count(≤ v)?
-        C->>S2: count(≤ v)?
-        C->>SN: count(≤ v)?
-        S1-->>C: 412
-        S2-->>C: 77
-        SN-->>C: 951
-        Note over C: sum the counts, then move lo or hi
-    end
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/sharded-median-dark.svg">
+  <img src="diagrams/sharded-median-light.svg" alt="Sequence: the coordinator asks every shard for count(<= v), each shard answers with one number, the coordinator moves lo or hi and starts the next of 32 rounds" width="100%">
+</picture>
+
+<sub>Archify diagram · <a href="diagrams/interactive/sharded-median.html">interactive version</a> (download and open in a browser) · <a href="diagrams/src/">source</a></sub>
 
 Shards never send their data, only one number back per round. The harness tests this on 50 random clusters of 2 to 40 shards, and it matches the full sort every time.
 
@@ -481,6 +476,13 @@ Measured at 1,000 numbers per array: **38 ns before, 36 ns after** in the run be
 ---
 
 ## 12. Interview round: the whole map
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/solution-map-dark.svg">
+  <img src="diagrams/solution-map-light.svg" alt="Tree of every approach: linear (sort, merge), search a position (the cut, modern cut, k-th via the cut, k-th elimination), search a value (count <= v, 1,000 shards)" width="100%">
+</picture>
+
+<sub>Archify diagram · <a href="diagrams/interactive/solution-map.html">interactive version</a> (download and open in a browser) · <a href="diagrams/src/">source</a></sub>
 
 | solution | time | space | when it's the right answer |
 |---|---|---|---|
@@ -564,8 +566,16 @@ On the example, k = 3 gives **3** (cutA = 2, cutB = 1). The harness checks it ag
 │   ├── value/Solution.java       §9  binary search on the value
 │   ├── sharded/ShardedMedian.java §10 a thousand machines
 │   └── modern/Solution.java      §11 the cut, modern Java
-└── homework/KthSmallest.java     §13 k-th smallest with the cut
+├── homework/KthSmallest.java     §13 k-th smallest with the cut
+└── diagrams/                     Archify diagrams: sources, interactive HTML, light/dark SVG
 ```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/harness-dark.svg">
+  <img src="diagrams/harness-light.svg" alt="Harness dataflow: examples, random cases and shard clusters feed every case to the 7 solutions and to an independent reference; an exact compare must report 0 failures" width="100%">
+</picture>
+
+<sub>Archify diagram · <a href="diagrams/interactive/harness.html">interactive version</a> (download and open in a browser) · <a href="diagrams/src/">source</a></sub>
 
 Each `solutions/*/Solution.java` is a paste-ready LeetCode `class Solution`. `run.sh` copies them into `build/` under distinct class names so the harness can run them side by side.
 

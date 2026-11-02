@@ -1,0 +1,154 @@
+{
+ "schema_version": 1,
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "Median across 1,000 shards: one round of the value search",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/sharded-median.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "emphasis": {
+     "label": "count request"
+    },
+    "return": {
+     "label": "one number back"
+    },
+    "dashed": {
+     "label": "next round"
+    }
+   }
+  }
+ },
+ "participants": [
+  {
+   "id": "c",
+   "type": "backend",
+   "label": "Coordinator",
+   "sublabel": "binary search on v"
+  },
+  {
+   "id": "s1",
+   "type": "database",
+   "label": "Shard 1",
+   "sublabel": "sorted locally"
+  },
+  {
+   "id": "s2",
+   "type": "database",
+   "label": "Shard 2",
+   "sublabel": "sorted locally"
+  },
+  {
+   "id": "sn",
+   "type": "database",
+   "label": "Shard 1000",
+   "sublabel": "sorted locally"
+  }
+ ],
+ "segments": [
+  {
+   "from": 150,
+   "to": 262,
+   "label": "Ask every shard"
+  },
+  {
+   "from": 272,
+   "to": 384,
+   "label": "Answers: one number each"
+  },
+  {
+   "from": 394,
+   "to": 460,
+   "label": "Next round"
+  }
+ ],
+ "messages": [
+  {
+   "id": "q1",
+   "from": "c",
+   "to": "s1",
+   "y": 172,
+   "label": "count(<= v)?",
+   "variant": "emphasis",
+   "note": "v = floorDiv(lo + hi, 2)"
+  },
+  {
+   "id": "q2",
+   "from": "c",
+   "to": "s2",
+   "y": 216,
+   "label": "count(<= v)?",
+   "variant": "emphasis"
+  },
+  {
+   "id": "qn",
+   "from": "c",
+   "to": "sn",
+   "y": 244,
+   "label": "count(<= v)?",
+   "variant": "emphasis"
+  },
+  {
+   "id": "r1",
+   "from": "s1",
+   "to": "c",
+   "y": 292,
+   "label": "412",
+   "variant": "return",
+   "note": "binary search, ~20 steps"
+  },
+  {
+   "id": "r2",
+   "from": "s2",
+   "to": "c",
+   "y": 336,
+   "label": "77",
+   "variant": "return"
+  },
+  {
+   "id": "rn",
+   "from": "sn",
+   "to": "c",
+   "y": 366,
+   "label": "951",
+   "variant": "return"
+  },
+  {
+   "id": "nx",
+   "from": "c",
+   "to": "s1",
+   "y": 410,
+   "label": "round 2 of 32",
+   "variant": "dashed",
+   "note": "sum >= k ? hi = v : lo = v + 1"
+  }
+ ],
+ "activations": [
+  {
+   "participant": "c",
+   "from": 165,
+   "to": 430,
+   "type": "backend"
+  },
+  {
+   "participant": "s1",
+   "from": 172,
+   "to": 292,
+   "type": "database"
+  },
+  {
+   "participant": "s2",
+   "from": 216,
+   "to": 336,
+   "type": "database"
+  },
+  {
+   "participant": "sn",
+   "from": 244,
+   "to": 366,
+   "type": "database"
+  }
+ ]
+}
