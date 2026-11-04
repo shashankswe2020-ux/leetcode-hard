@@ -2,6 +2,10 @@
 
 One Hard a Day · Day 002 · LeetCode Hard · [problem page](https://leetcode.com/problems/trapping-rain-water/) · two pointers, monotonic stack
 
+[![Watch the video: One Hard a Day, Day 002](https://img.youtube.com/vi/auBFP_EM_fw/hqdefault.jpg)](https://youtu.be/auBFP_EM_fw)
+
+▶ **[Watch the video on YouTube](https://youtu.be/auBFP_EM_fw)** · [@shank-labs](https://www.youtube.com/@shank-labs)
+
 > Ten bars. Rain falls. How much water stays trapped between them? The obvious answer does about 400 million reads at the limit. Two pointers do one pass, under 20,000 steps, with no extra memory. And moving the taller side instead of the shorter one gives you 14, not 13.
 
 ```bash

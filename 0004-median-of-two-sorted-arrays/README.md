@@ -2,6 +2,10 @@
 
 **One Hard a Day · Day 001** · LeetCode Hard · [problem page](https://leetcode.com/problems/median-of-two-sorted-arrays/) · pattern: **binary search on a partition**
 
+[![Watch the video: One Hard a Day, Day 001](https://img.youtube.com/vi/qAbwZebxuWc/hqdefault.jpg)](https://youtu.be/qAbwZebxuWc)
+
+▶ **[Watch the video on YouTube](https://youtu.be/qAbwZebxuWc)** · [@shank-labs](https://www.youtube.com/@shank-labs)
+
 > Two lists, both already sorted. Find the number in the middle of all of them.
 > The obvious answer walks through a thousand numbers. The answer interviewers want makes about **ten guesses**. On the example below it needs **two**.
 
