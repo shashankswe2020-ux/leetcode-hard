@@ -5,6 +5,7 @@ One LeetCode hard per folder: every solution from brute force to optimal in Java
 | # | Problem | Pattern | Best | Folder |
 |---|---|---|---|---|
 | 4 | Median of Two Sorted Arrays | binary search on a partition | O(log min(m, n)) | [0004-median-of-two-sorted-arrays](0004-median-of-two-sorted-arrays/) |
+| 42 | Trapping Rain Water | two pointers, monotonic stack | O(n) time, O(1) space | [0042-trapping-rain-water](0042-trapping-rain-water/) |
 
 ## Each folder
 
@@ -19,7 +20,7 @@ NNNN-problem-name/
 
 ## Run
 
-Requires JDK 17 or newer.
+Requires JDK 17 or newer (0042 needs JDK 24+ for its Gatherers variant).
 
 ```bash
 cd 0004-median-of-two-sorted-arrays

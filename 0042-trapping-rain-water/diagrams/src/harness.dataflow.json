@@ -1,0 +1,161 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "How Harness.java proves the solutions",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/harness.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "emphasis": {
+     "label": "checked path"
+    },
+    "default": {
+     "label": "test inputs and expected values"
+    },
+    "database": {
+     "label": "verdict"
+    }
+   }
+  }
+ },
+ "stages": [
+  {
+   "label": "Inputs"
+  },
+  {
+   "label": "Gather"
+  },
+  {
+   "label": "Run both"
+  },
+  {
+   "label": "Compare"
+  },
+  {
+   "label": "Verdict"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "fixed",
+   "type": "external",
+   "label": "Examples + edges",
+   "sublabel": "flat, staircases, peaks",
+   "stage": 0,
+   "row": 0
+  },
+  {
+   "id": "rand",
+   "type": "external",
+   "label": "Random bars",
+   "sublabel": "10,200, seeded",
+   "stage": 0,
+   "row": 1,
+   "tag": "up to 20,000 bars"
+  },
+  {
+   "id": "maps",
+   "type": "external",
+   "label": "Maps + shards",
+   "sublabel": "3,000 maps, 2,000 splits",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "cases",
+   "type": "messagebus",
+   "label": "Every case",
+   "sublabel": "cloned per call",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "sols",
+   "type": "backend",
+   "label": "All solutions",
+   "sublabel": "brute .. sharded, 2D",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "ref",
+   "type": "security",
+   "label": "Reference",
+   "sublabel": "formula in long math",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "cmp",
+   "type": "security",
+   "label": "Exact compare",
+   "sublabel": "same long value",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "ok",
+   "type": "database",
+   "label": "ALL AGREE",
+   "sublabel": "else FAIL + exit 1",
+   "stage": 4,
+   "row": 1
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "fixed",
+   "to": "cases",
+   "label": "hand-picked"
+  },
+  {
+   "id": "f2",
+   "from": "rand",
+   "to": "cases",
+   "label": "10,200 arrays"
+  },
+  {
+   "id": "f3",
+   "from": "maps",
+   "to": "cases",
+   "label": "maps, shards"
+  },
+  {
+   "id": "f4",
+   "from": "cases",
+   "to": "sols",
+   "label": "same input",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f5",
+   "from": "cases",
+   "to": "ref",
+   "label": "same input"
+  },
+  {
+   "id": "f6",
+   "from": "sols",
+   "to": "cmp",
+   "label": "answers",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f7",
+   "from": "ref",
+   "to": "cmp",
+   "label": "expected"
+  },
+  {
+   "id": "f8",
+   "from": "cmp",
+   "to": "ok",
+   "label": "0 failures",
+   "variant": "emphasis"
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "Two pointers: settle the shorter side",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/two-pointers.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "frontend": {
+     "label": "Start"
+    },
+    "backend": {
+     "label": "Compute"
+    },
+    "database": {
+     "label": "Read"
+    },
+    "security": {
+     "label": "Check"
+    },
+    "messagebus": {
+     "label": "Move"
+    }
+   }
+  }
+ },
+ "lanes": [
+  {
+   "id": "setup",
+   "label": "Set up"
+  },
+  {
+   "id": "compare",
+   "label": "Compare"
+  },
+  {
+   "id": "settle",
+   "label": "Left is shorter"
+  },
+  {
+   "id": "mirror",
+   "label": "Otherwise (mirror)"
+  },
+  {
+   "id": "answer",
+   "label": "Answer"
+  }
+ ],
+ "mainPath": [
+  "init",
+  "loop",
+  "cmp",
+  "leftmax",
+  "addleft",
+  "stepleft",
+  "done"
+ ],
+ "nodes": [
+  {
+   "id": "init",
+   "lane": "setup",
+   "col": 0,
+   "type": "frontend",
+   "icon": "start",
+   "label": "Pointers at both ends",
+   "sublabel": "maxLeft = maxRight = 0"
+  },
+  {
+   "id": "loop",
+   "lane": "compare",
+   "col": 1,
+   "type": "security",
+   "icon": "decision",
+   "label": "left < right ?",
+   "sublabel": "pointers not met"
+  },
+  {
+   "id": "cmp",
+   "lane": "compare",
+   "col": 2,
+   "type": "security",
+   "icon": "decision",
+   "label": "bars[left] < bars[right] ?",
+   "sublabel": "which side is shorter"
+  },
+  {
+   "id": "leftmax",
+   "lane": "settle",
+   "col": 3,
+   "type": "database",
+   "label": "maxLeft = max(maxLeft, bar)",
+   "sublabel": "update before subtract"
+  },
+  {
+   "id": "addleft",
+   "lane": "settle",
+   "col": 4,
+   "type": "backend",
+   "label": "water += maxLeft - bar",
+   "sublabel": "final: the crown is right"
+  },
+  {
+   "id": "stepleft",
+   "lane": "settle",
+   "col": 5,
+   "type": "messagebus",
+   "label": "left++",
+   "sublabel": "one bar settled"
+  },
+  {
+   "id": "rightmax",
+   "lane": "mirror",
+   "col": 3,
+   "type": "database",
+   "label": "maxRight = max(maxRight, bar)",
+   "sublabel": "mirror case, ties too"
+  },
+  {
+   "id": "addright",
+   "lane": "mirror",
+   "col": 4,
+   "type": "messagebus",
+   "label": "water += maxRight - bar",
+   "sublabel": "right--, final: crown is left"
+  },
+  {
+   "id": "done",
+   "lane": "answer",
+   "col": 5,
+   "type": "backend",
+   "icon": "success",
+   "label": "return water",
+   "sublabel": "O(n) time, O(1) space",
+   "tag": "13 on the example"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "init",
+   "to": "loop"
+  },
+  {
+   "id": "e2",
+   "from": "loop",
+   "to": "cmp",
+   "label": "yes",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e3",
+   "from": "cmp",
+   "to": "leftmax",
+   "label": "yes"
+  },
+  {
+   "id": "e4",
+   "from": "leftmax",
+   "to": "addleft"
+  },
+  {
+   "id": "e5",
+   "from": "addleft",
+   "to": "stepleft"
+  },
+  {
+   "id": "e6",
+   "from": "stepleft",
+   "to": "done",
+   "label": "met",
+   "variant": "emphasis",
+   "role": "main"
+  },
+  {
+   "id": "e7",
+   "from": "cmp",
+   "to": "rightmax",
+   "label": "no",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e8",
+   "from": "rightmax",
+   "to": "addright",
+   "role": "branch"
+  },
+  {
+   "id": "e9",
+   "from": "stepleft",
+   "to": "loop",
+   "label": "next step",
+   "variant": "dashed",
+   "role": "return"
+  },
+  {
+   "id": "e10",
+   "from": "addright",
+   "to": "loop",
+   "variant": "dashed",
+   "role": "return"
+  }
+ ]
+}

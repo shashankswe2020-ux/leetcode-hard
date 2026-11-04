@@ -1,0 +1,19 @@
+{
+ "schema_version": 1,
+ "diagram_type": "tree",
+ "meta": {"title": "Every way to trap the rain", "locale": "en", "quality_profile": "showcase", "output": "interactive/solution-map.html"},
+ "nodes": [
+  {"id": "root", "label": "Trapping Rain Water", "sublabel": "LeetCode 42"},
+  {"id": "col", "parent": "root", "label": "Columns", "sublabel": "min(maxL, maxR) - h per bar"},
+  {"id": "row", "parent": "root", "label": "Rows", "sublabel": "slabs between walls"},
+  {"id": "fol", "parent": "root", "label": "Follow-ups", "sublabel": "the interview round"},
+  {"id": "brute", "parent": "col", "label": "Brute force", "sublabel": "O(n²): rescan both sides"},
+  {"id": "walls", "parent": "col", "label": "Remember the walls", "sublabel": "O(n), two arrays"},
+  {"id": "tp", "parent": "col", "label": "Two pointers", "sublabel": "O(n), O(1): the answer they want"},
+  {"id": "stack", "parent": "row", "label": "Monotonic stack", "sublabel": "O(n), O(n) space"},
+  {"id": "stream", "parent": "row", "label": "Endless stream", "sublabel": "stack bounded by heights"},
+  {"id": "grid", "parent": "fol", "label": "2D map (LC 407)", "sublabel": "min-heap from the border"},
+  {"id": "shard", "parent": "fol", "label": "1,000 machines", "sublabel": "two rounds, seeded fill"},
+  {"id": "width", "parent": "fol", "label": "Bars with widths", "sublabel": "only the add changes"}
+ ]
+}

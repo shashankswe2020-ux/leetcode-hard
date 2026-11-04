@@ -1,0 +1,165 @@
+{
+ "schema_version": 1,
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "1,000 machines: two rounds, no bars move",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/thousand-machines.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "emphasis": {
+     "label": "coordinator sends"
+    },
+    "return": {
+     "label": "one number back"
+    },
+    "dashed": {
+     "label": "water back (round 2)"
+    }
+   }
+  }
+ },
+ "participants": [
+  {
+   "id": "c",
+   "type": "backend",
+   "label": "Coordinator",
+   "sublabel": "sweeps the maxima"
+  },
+  {
+   "id": "s1",
+   "type": "database",
+   "label": "Shard 1",
+   "sublabel": "bars 0..k"
+  },
+  {
+   "id": "s2",
+   "type": "database",
+   "label": "Shard 2",
+   "sublabel": "next bars"
+  },
+  {
+   "id": "sn",
+   "type": "database",
+   "label": "Shard 1000",
+   "sublabel": "last bars"
+  }
+ ],
+ "segments": [
+  {
+   "from": 150,
+   "to": 262,
+   "label": "Round 1: shard maxima"
+  },
+  {
+   "from": 286,
+   "to": 506,
+   "label": "Round 2: walls out, water back"
+  }
+ ],
+ "messages": [
+  {
+   "id": "a1",
+   "from": "s1",
+   "to": "c",
+   "y": 172,
+   "label": "max 3",
+   "variant": "return",
+   "note": "one number per shard"
+  },
+  {
+   "id": "a2",
+   "from": "s2",
+   "to": "c",
+   "y": 216,
+   "label": "max 4",
+   "variant": "return"
+  },
+  {
+   "id": "an",
+   "from": "sn",
+   "to": "c",
+   "y": 244,
+   "label": "max 3",
+   "variant": "return"
+  },
+  {
+   "id": "w1",
+   "from": "c",
+   "to": "s1",
+   "y": 306,
+   "label": "walls (0, 4)",
+   "variant": "emphasis",
+   "note": "prefix and suffix max"
+  },
+  {
+   "id": "w2",
+   "from": "c",
+   "to": "s2",
+   "y": 350,
+   "label": "walls (3, 3)",
+   "variant": "emphasis"
+  },
+  {
+   "id": "wn",
+   "from": "c",
+   "to": "sn",
+   "y": 378,
+   "label": "walls (4, 0)",
+   "variant": "emphasis"
+  },
+  {
+   "id": "b1",
+   "from": "s1",
+   "to": "c",
+   "y": 418,
+   "label": "water 2",
+   "variant": "dashed",
+   "note": "max-comparing two pointers"
+  },
+  {
+   "id": "b2",
+   "from": "s2",
+   "to": "c",
+   "y": 462,
+   "label": "water 7",
+   "variant": "dashed"
+  },
+  {
+   "id": "bn",
+   "from": "sn",
+   "to": "c",
+   "y": 490,
+   "label": "water 4, sum = 13",
+   "variant": "dashed"
+  }
+ ],
+ "activations": [
+  {
+   "participant": "c",
+   "from": 165,
+   "to": 500,
+   "type": "backend"
+  },
+  {
+   "participant": "s1",
+   "from": 172,
+   "to": 418,
+   "type": "database"
+  },
+  {
+   "participant": "s2",
+   "from": 216,
+   "to": 462,
+   "type": "database"
+  },
+  {
+   "participant": "sn",
+   "from": 244,
+   "to": 490,
+   "type": "database"
+  }
+ ]
+}
