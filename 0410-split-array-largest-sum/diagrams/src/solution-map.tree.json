@@ -1,0 +1,89 @@
+{
+ "schema_version": 1,
+ "diagram_type": "tree",
+ "meta": {
+  "title": "Every way to split the array",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/solution-map.html"
+ },
+ "nodes": [
+  {
+   "id": "root",
+   "label": "Split Array Largest Sum",
+   "sublabel": "LeetCode 410"
+  },
+  {
+   "id": "cuts",
+   "parent": "root",
+   "label": "Search the cuts",
+   "sublabel": "choose where to cut"
+  },
+  {
+   "id": "ans",
+   "parent": "root",
+   "label": "Search the answer",
+   "sublabel": "guess the limit, check it"
+  },
+  {
+   "id": "fol",
+   "parent": "root",
+   "label": "Follow-ups",
+   "sublabel": "the interview round"
+  },
+  {
+   "id": "brute",
+   "parent": "cuts",
+   "label": "Try every cut",
+   "sublabel": "C(n-1, k-1) splits"
+  },
+  {
+   "id": "dp",
+   "parent": "cuts",
+   "label": "DP table",
+   "sublabel": "O(k n\u00b2), 23.3 M steps"
+  },
+  {
+   "id": "dpb",
+   "parent": "cuts",
+   "label": "DP with break",
+   "sublabel": "1.8 M steps, 2.1 ms"
+  },
+  {
+   "id": "bs",
+   "parent": "ans",
+   "label": "Binary search",
+   "sublabel": "O(n log sum), ~11 \u00b5s"
+  },
+  {
+   "id": "cand",
+   "parent": "ans",
+   "label": "Candidate sums",
+   "sublabel": "search run weights only"
+  },
+  {
+   "id": "mod",
+   "parent": "ans",
+   "label": "Modern Java",
+   "sublabel": "long sums, toIntExact"
+  },
+  {
+   "id": "shard",
+   "parent": "fol",
+   "label": "1,000 machines",
+   "sublabel": "carry walk, 39 guesses"
+  },
+  {
+   "id": "batch",
+   "parent": "fol",
+   "label": "Batched guesses",
+   "sublabel": "B = 15: 10 walks"
+  },
+  {
+   "id": "neg",
+   "parent": "fol",
+   "label": "Negatives / doubles",
+   "sublabel": "greedy breaks / exact runs"
+  }
+ ]
+}

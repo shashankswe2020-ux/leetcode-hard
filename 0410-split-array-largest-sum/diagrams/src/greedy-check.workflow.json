@@ -1,0 +1,164 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "pieces(limit): the greedy check",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/greedy-check.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "frontend": {
+     "label": "Start"
+    },
+    "backend": {
+     "label": "Compute"
+    },
+    "database": {
+     "label": "Read"
+    },
+    "security": {
+     "label": "Check"
+    },
+    "messagebus": {
+     "label": "Move"
+    }
+   }
+  }
+ },
+ "lanes": [
+  {
+   "id": "setup",
+   "label": "Set up"
+  },
+  {
+   "id": "scan",
+   "label": "Next number"
+  },
+  {
+   "id": "cut",
+   "label": "Over the limit"
+  },
+  {
+   "id": "add",
+   "label": "Still fits"
+  },
+  {
+   "id": "answer",
+   "label": "Answer"
+  }
+ ],
+ "mainPath": [
+  "init",
+  "next",
+  "test",
+  "cutn",
+  "done"
+ ],
+ "nodes": [
+  {
+   "id": "init",
+   "lane": "setup",
+   "col": 0,
+   "type": "frontend",
+   "icon": "start",
+   "label": "count = 1, sum = 0",
+   "sublabel": "the open piece counts"
+  },
+  {
+   "id": "next",
+   "lane": "scan",
+   "col": 1,
+   "type": "database",
+   "label": "for num in nums",
+   "sublabel": "left to right, once"
+  },
+  {
+   "id": "test",
+   "lane": "scan",
+   "col": 2,
+   "type": "security",
+   "icon": "decision",
+   "label": "sum + num > limit ?",
+   "sublabel": "strictly greater"
+  },
+  {
+   "id": "cutn",
+   "lane": "cut",
+   "col": 3,
+   "type": "messagebus",
+   "label": "count++, sum = num",
+   "sublabel": "cut before num"
+  },
+  {
+   "id": "addn",
+   "lane": "add",
+   "col": 3,
+   "type": "backend",
+   "label": "sum += num",
+   "sublabel": "piece grows"
+  },
+  {
+   "id": "done",
+   "lane": "answer",
+   "col": 4,
+   "type": "backend",
+   "icon": "success",
+   "label": "return count",
+   "sublabel": "fewest pieces, O(n)",
+   "tag": "limit 13: 3 pieces"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "init",
+   "to": "next"
+  },
+  {
+   "id": "e2",
+   "from": "next",
+   "to": "test",
+   "label": "num",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e3",
+   "from": "test",
+   "to": "cutn",
+   "label": "yes"
+  },
+  {
+   "id": "e4",
+   "from": "cutn",
+   "to": "done",
+   "label": "end of array",
+   "variant": "emphasis",
+   "role": "main"
+  },
+  {
+   "id": "e5",
+   "from": "test",
+   "to": "addn",
+   "label": "no",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e6",
+   "from": "cutn",
+   "to": "next",
+   "label": "next",
+   "variant": "dashed",
+   "role": "return"
+  },
+  {
+   "id": "e7",
+   "from": "addn",
+   "to": "next",
+   "variant": "dashed",
+   "role": "return"
+  }
+ ]
+}

@@ -1,0 +1,179 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "Binary search on the answer",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/binary-search.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "frontend": {
+     "label": "Start"
+    },
+    "backend": {
+     "label": "Compute"
+    },
+    "database": {
+     "label": "Read"
+    },
+    "security": {
+     "label": "Check"
+    },
+    "messagebus": {
+     "label": "Move"
+    }
+   }
+  }
+ },
+ "lanes": [
+  {
+   "id": "setup",
+   "label": "Set up"
+  },
+  {
+   "id": "probe",
+   "label": "Probe"
+  },
+  {
+   "id": "fits",
+   "label": "Fits in k"
+  },
+  {
+   "id": "many",
+   "label": "Too many pieces"
+  },
+  {
+   "id": "answer",
+   "label": "Answer"
+  }
+ ],
+ "mainPath": [
+  "init",
+  "loop",
+  "mid",
+  "check",
+  "keep",
+  "done"
+ ],
+ "nodes": [
+  {
+   "id": "init",
+   "lane": "setup",
+   "col": 0,
+   "type": "frontend",
+   "icon": "start",
+   "label": "lo = max, hi = total",
+   "sublabel": "9 and 36 on the example"
+  },
+  {
+   "id": "loop",
+   "lane": "probe",
+   "col": 1,
+   "type": "security",
+   "icon": "decision",
+   "label": "lo < hi ?",
+   "sublabel": "range not empty"
+  },
+  {
+   "id": "mid",
+   "lane": "probe",
+   "col": 2,
+   "type": "backend",
+   "label": "mid = lo + (hi - lo) / 2",
+   "sublabel": "no overflow"
+  },
+  {
+   "id": "check",
+   "lane": "probe",
+   "col": 3,
+   "type": "security",
+   "icon": "decision",
+   "label": "pieces(mid) <= k ?",
+   "sublabel": "one greedy pass"
+  },
+  {
+   "id": "keep",
+   "lane": "fits",
+   "col": 4,
+   "type": "messagebus",
+   "label": "hi = mid",
+   "sublabel": "mid works: keep it"
+  },
+  {
+   "id": "skip",
+   "lane": "many",
+   "col": 4,
+   "type": "messagebus",
+   "label": "lo = mid + 1",
+   "sublabel": "mid too small"
+  },
+  {
+   "id": "done",
+   "lane": "answer",
+   "col": 5,
+   "type": "backend",
+   "icon": "success",
+   "label": "return lo",
+   "sublabel": "O(n log sum), O(1) space",
+   "tag": "13 after 5 probes"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "init",
+   "to": "loop"
+  },
+  {
+   "id": "e2",
+   "from": "loop",
+   "to": "mid",
+   "label": "yes",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e3",
+   "from": "mid",
+   "to": "check"
+  },
+  {
+   "id": "e4",
+   "from": "check",
+   "to": "keep",
+   "label": "yes"
+  },
+  {
+   "id": "e5",
+   "from": "keep",
+   "to": "done",
+   "label": "lo = hi",
+   "variant": "emphasis",
+   "role": "main"
+  },
+  {
+   "id": "e6",
+   "from": "check",
+   "to": "skip",
+   "label": "no",
+   "variant": "security",
+   "role": "branch"
+  },
+  {
+   "id": "e7",
+   "from": "keep",
+   "to": "loop",
+   "label": "next probe",
+   "variant": "dashed",
+   "role": "return"
+  },
+  {
+   "id": "e8",
+   "from": "skip",
+   "to": "loop",
+   "variant": "dashed",
+   "role": "return"
+  }
+ ]
+}

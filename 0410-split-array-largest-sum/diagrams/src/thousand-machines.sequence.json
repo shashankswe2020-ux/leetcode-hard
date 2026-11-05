@@ -1,0 +1,150 @@
+{
+ "schema_version": 1,
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "1,000 machines: one walk per guess, numbers never move",
+  "locale": "en",
+  "quality_profile": "showcase",
+  "output": "interactive/thousand-machines.html",
+  "legend": {
+   "mode": "auto",
+   "entries": {
+    "default": {
+     "label": "up front: max, total"
+    },
+    "emphasis": {
+     "label": "(limit, carry) out"
+    },
+    "return": {
+     "label": "(cuts, carry) back"
+    }
+   }
+  }
+ },
+ "participants": [
+  {
+   "id": "c",
+   "type": "backend",
+   "label": "Coordinator",
+   "sublabel": "binary search + carry"
+  },
+  {
+   "id": "m1",
+   "type": "database",
+   "label": "Machine 1",
+   "sublabel": "its numbers stay"
+  },
+  {
+   "id": "m2",
+   "type": "database",
+   "label": "Machine 2",
+   "sublabel": "total fits: no trip"
+  },
+  {
+   "id": "mn",
+   "type": "database",
+   "label": "Machine 1000",
+   "sublabel": "last numbers"
+  }
+ ],
+ "segments": [
+  {
+   "from": 150,
+   "to": 262,
+   "label": "Once: max and total"
+  },
+  {
+   "from": 286,
+   "to": 470,
+   "label": "Each guess: walk with the carry"
+  }
+ ],
+ "messages": [
+  {
+   "id": "u1",
+   "from": "m1",
+   "to": "c",
+   "y": 172,
+   "label": "max, total",
+   "variant": "default",
+   "note": "2 values per machine"
+  },
+  {
+   "id": "u2",
+   "from": "m2",
+   "to": "c",
+   "y": 216,
+   "label": "max, total",
+   "variant": "default"
+  },
+  {
+   "id": "un",
+   "from": "mn",
+   "to": "c",
+   "y": 244,
+   "label": "max, total",
+   "variant": "default"
+  },
+  {
+   "id": "g1",
+   "from": "c",
+   "to": "m1",
+   "y": 306,
+   "label": "(limit, carry 0)",
+   "variant": "emphasis",
+   "note": "a cut lands here"
+  },
+  {
+   "id": "r1",
+   "from": "m1",
+   "to": "c",
+   "y": 350,
+   "label": "(1 cut, carry 28)",
+   "variant": "return"
+  },
+  {
+   "id": "gn",
+   "from": "c",
+   "to": "mn",
+   "y": 394,
+   "label": "(limit, carry 41)",
+   "variant": "emphasis",
+   "note": "machine 2 added locally"
+  },
+  {
+   "id": "rn",
+   "from": "mn",
+   "to": "c",
+   "y": 438,
+   "label": "(2 cuts, carry 17)",
+   "variant": "return",
+   "note": "more than k pieces: stop early"
+  }
+ ],
+ "activations": [
+  {
+   "participant": "c",
+   "from": 165,
+   "to": 450,
+   "type": "backend"
+  },
+  {
+   "participant": "m1",
+   "from": 172,
+   "to": 350,
+   "type": "database"
+  },
+  {
+   "participant": "m2",
+   "from": 216,
+   "to": 230,
+   "type": "database"
+  },
+  {
+   "participant": "mn",
+   "from": 244,
+   "to": 438,
+   "type": "database"
+  }
+ ]
+}
